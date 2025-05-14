@@ -14,7 +14,7 @@ app = FastAPI() # 创建FastAPI实例
 # 访问地址：http://127.0.0.1:8000
 @app.get("/")
 async def test_one():
-    return {"message": "My first fastapi project"}
+    return {"message": "MPRSS"}
 
 @app.get("/wx/job")
 async def start_job():

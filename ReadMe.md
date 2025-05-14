@@ -8,3 +8,5 @@ uvicorn web:app --host 0.0.0.0 --port 8001 --reload
 3、定时抓取
 python job.py
 ```
+
+# 兼容
