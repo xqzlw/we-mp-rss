@@ -30,6 +30,10 @@ async def get_qrcode():
 @router.get("/qr/image", summary="获取登录二维码图片")
 async def qr_image():
     return success_response(WX_API.GetHasCode())
+
+@router.get("/qr/status",summary="获取扫描状态")
+async def qr_status():
+     return success_response(WX_API.HasLogin)    
 @router.post("/login", summary="用户登录")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(form_data.username, form_data.password)

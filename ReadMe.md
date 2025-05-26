@@ -110,6 +110,16 @@ npm run dev
 npm run build
 ```
 
+# Docker构建
+```
+docker build -t we-mp-rss .
+```
+# Docker运行
+```
+docker run -d --name we-mp-rss -p 8001:8001 we-mp-rss
+```
+
+
 ## 贡献指南
 
 欢迎提交Pull Request。在提交前请确保：

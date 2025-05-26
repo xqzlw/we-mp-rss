@@ -3,12 +3,12 @@ import json
 import re
 import datetime
 from datetime import datetime, timezone
-import core.config as cfg
+from core.config import cfg
 import core.db as db
 
-def dateformat(timestamp:int):
+def dateformat(timestamp:any):
     # UTC时间对象
-    utc_dt = datetime.fromtimestamp(timestamp, timezone.utc)
+    utc_dt = datetime.fromtimestamp(int(timestamp), timezone.utc)
     t=(utc_dt.strftime("%Y-%m-%d %H:%M:%S")) 
 
     # UTC转本地时区
@@ -101,7 +101,10 @@ def get_list(faker_id:str=None,mp_id:str=None,is_add:bool=False):
     articles=[]
     if is_add:
       import time
-      update_mps(mp_id,Feed(sync_time=int(time.time()),update_time=int(time.time())))
+      update_mps(mp_id,Feed(
+          sync_time=int(time.time()),
+          update_time=int(time.time()),
+          ))
     data=get_Articles(faker_id)
     try:
         data=data['publish_page']['publish_list']

@@ -4,7 +4,7 @@ from core.db import DB
 from core.wx import search_Biz
 from .base import success_response, error_response
 from datetime import datetime
-import core.config as cfg
+from core.config import cfg
 import uuid
 import os
 import requests
@@ -84,7 +84,7 @@ async def get_mps(
 @router.get("/update/{mp_id}", summary="更新公众号文章")
 async def update_mps(
      mp_id: str,
-    # current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user)
 ):
     session = DB.get_session()
     try:
@@ -101,7 +101,7 @@ async def update_mps(
         from core.wx import get_list
         import time
         time_span=int(time.time())-mp.update_time
-        if time_span<cfg.get("sync_interval",60*60):
+        if time_span<cfg.get("sync_interval",60):
            raise HTTPException(
                 status_code=status.HTTP_200_OK,
                 detail=error_response(

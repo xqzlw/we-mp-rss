@@ -69,7 +69,7 @@ class FirefoxController:
                 # Linux安装逻辑
                 if not self._is_firefox_installed_linux():
                     print("正在通过包管理器安装Firefox...")
-                    subprocess.run(["sudo", "apt-get", "install", "-y", "firefox"], check=True)
+                    subprocess.run([ "apt-get", "install","--no-install-recommends","-f" ,"-y", "firefox"], check=True)
         except Exception as e:
             print(f"Firefox安装失败: {str(e)}")
             raise
@@ -218,20 +218,24 @@ class FirefoxController:
             print(f"驱动配置失败: {str(e)}")
             raise
 
-    def start_browser(self, headless=False):
+    def start_browser(self, headless=True):
         """启动浏览器"""
         try:
             self._install_firefox()
             self._setup_driver()
             
             if headless:
-                self.options.add_argument("--headless")
-            
+                self.options.add_argument("--headless")          # 启用无界面模式
+                self.options.add_argument("--disable-gpu")       # 禁用 GPU 加速
+                self.options.add_argument("--no-sandbox")        # 无沙盒模式（Linux 必需）
+                self.options.add_argument("--disable-dev-shm-usage")  # 解决 Linux 内存不足问题
+
             service = Service(executable_path=self.driver_path)
             self.driver = webdriver.Firefox(service=service, options=self.options)
             return self.driver
         except WebDriverException as e:
             print(f"浏览器启动失败: {str(e)}")
+            print(e)
             raise
 
     def open_url(self, url):

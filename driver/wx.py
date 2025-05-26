@@ -10,8 +10,10 @@ import os
 import re
 import json
 class Wx:
+    HasLogin=False
     SESSION=None
     HasCode=False
+    isLOCK=False
     wx_login_url="static/wx_qrcode.png"
     def check_dependencies(self):
         """检查必要的依赖包"""
@@ -84,6 +86,7 @@ class Wx:
             if  self.isLOCK:
                 raise Exception("微信公众平台登录脚本正在运行，请勿重复运行！")
                 return None
+            self.HasLogin=False
             self.isLOCK=True
             self.clean()
             # 初始化浏览器控制器
@@ -130,7 +133,7 @@ class Wx:
             wait=WebDriverWait(controller.driver, 120)
             wait.until(EC.url_contains("https://mp.weixin.qq.com/cgi-bin/home"))
             print("登录成功！")
-            
+            self.HasLogin=True
             # 获取token
             token = self.extract_token_from_requests(controller.driver)
             

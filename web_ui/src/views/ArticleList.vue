@@ -1,6 +1,7 @@
 <template>
   <a-layout class="article-list">
     <a-layout-sider 
+      :width=280
       :style="{background: '#fff', padding: '0', borderRight: '1px solid #eee', display: 'flex', flexDirection: 'column'}"
     >
       <a-card 
@@ -84,7 +85,7 @@
             v-if="qrcodeUrl" 
             :src="qrcodeUrl" 
             alt="微信授权二维码" 
-            style="width: 300px; height: 300px"
+            style="width: 180px;"
           />
           <p style="margin-top: 16px">请使用微信扫描二维码完成授权</p>
         </template>
@@ -132,7 +133,7 @@
 import { ref, onMounted, h } from 'vue'
 import axios from 'axios'
 import { getArticles } from '@/api/article'
-import { QRCode } from '@/api/auth'
+import { QRCode,checkQRCodeStatus } from '@/api/auth'
 import { getSubscriptions ,UpdateMps} from '@/api/subscription'
 import { Message } from '@arco-design/web-vue'
 import { formatDateTime } from '@/utils/date'
@@ -253,7 +254,14 @@ const handleSearch = () => {
   pagination.value.current = 1
   fetchArticles()
 }
+const checkQrcode=() => {
+checkQRCodeStatus().then(response => {
+  qrcodeVisible.value = false
+}).catch(err => {
+  console.error('检查二维码状态失败:', err)
+})
 
+}
 const qrcodeVisible = ref(false)
 const qrcodeUrl = ref('')
 const qrcodeLoading = ref(false)
@@ -264,6 +272,7 @@ const showAuthQrcode = async () => {
     console.log('获取二维码成功:', response)
     qrcodeUrl.value = response.code
      qrcodeLoading.value = false
+     checkQrcode()
    }).catch(err => {
      console.error('获取二维码失败:', err)
      qrcodeLoading.value = false

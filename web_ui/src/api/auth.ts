@@ -44,11 +44,25 @@ export const QRCode = () => {
           // clearInterval(intervalId)
           // reject(err)
         })
-      }, 1000)
+      }, 3000)
     }).catch(reject)
   })
 }
-
+export const checkQRCodeStatus = () => {
+  return new Promise((resolve, reject) => {
+    const intervalId = setInterval(() => {
+        http.get("wx/auth/qr/status").then(response => {
+          if(response){
+            clearInterval(intervalId)
+            resolve(response)
+          }
+        }).catch(err => {
+          // clearInterval(intervalId)
+          // reject(err)
+        })
+      }, 3000)
+  })
+}
 export const refreshToken = () => {
   return http.post<LoginResult>('/wx/auth/refresh')
 }

@@ -22,14 +22,14 @@ class Db:
             
             # 自动创建表
             self.create_tables()
+          
         except Exception as e:
             print(f"Error creating database connection: {e}")
             raise
-            
     def create_tables(self):
         """Create all tables defined in models"""
-        from core.models import article, feed, user  # 导入所有模型
-        Base.metadata.create_all(self.engine)
+        from core.models.base import Base as B # 导入所有模型
+        B.metadata.create_all(self.engine)
         print('All Tables Created Successfully!')    
         
     def close(self) -> None:

@@ -1,7 +1,7 @@
 import schedule, time
 import core.wx as wx 
 import core.db as db
-import core.config as cfg
+from core.config import cfg
 import core.notice as notice
 import random
 import core.log as log
@@ -41,17 +41,17 @@ def do_job():
         all_count=all_count+mps_count
 
         # 随机休眠 防止被封锁
-        if not cfg.DEBUG:
-            time.sleep(random.randint(2,60))
+        # if not cfg.DEBUG:
+        #     time.sleep(random.randint(2,5))
     logger.info(f"所有公众号更新完成,共更新{all_count}条数据")
     text+=f"\n所有公众号更新完成,共更新{all_count}条数据"
     send_notice(text,cfg.get('app_name',default='we-mp-rss'))
 def start():
-    schedule.every(10).seconds.do(do_job)  # 每10秒执行
+    schedule.every(60).seconds.do(do_job)  # 每10秒执行
     # schedule.every.day.at("08:00").do(job)  # 每天8点执行
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(10)
 
 def send_notice(text:str="",title:str=""):
     markdown_text = f"""### {title} 通知

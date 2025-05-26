@@ -23,13 +23,15 @@ def send_dingtalk_markdown(webhook_url, title, text, is_at_all=False, at_mobiles
             "isAtAll": is_at_all
         }
     }
-    
-    response = requests.post(
-        url=webhook_url,
-        headers=headers,
-        data=json.dumps(data)
-    )
-    print(response.text)
+    try:
+        response = requests.post(
+            url=webhook_url,
+            headers=headers,
+            data=json.dumps(data)
+        )
+        print(response.text)
+    except Exception as e:
+        print('通知发送失败', e)
 # 使用示例
 # markdown_text = """### 项目状态报告  
 # - **项目名称**: XX系统升级  

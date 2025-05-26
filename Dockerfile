@@ -1,25 +1,36 @@
-FROM ac2-registry.cn-hangzhou.cr.aliyuncs.com/ac2/base:ubuntu24.04-py312
+# 定义镜像源环境变量
+FROM docker.1ms.run/ubuntu:20.04 AS base 
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update
+RUN apt install -y python3 
+RUN apt install -y python3-pip
+# 自动设置时区（如上海）
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN apt install -y --no-install-recommends firefox
+
+
+FROM base
 
 # 安装系统依赖
-# RUN apt-get install -y firefox 
-
 
 WORKDIR /app
 
+
+RUN export PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 # 复制Python依赖文件
 COPY requirements.txt .
-
-# 安装Python依赖
-# RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 复制后端代码
 COPY . .
-
-
+COPY ./config.example.yaml  ./config.yaml
+RUN chmod +x ./start.sh
 # 暴露端口
 EXPOSE 8001
 
 # 启动命令
 # CMD ["uvicorn", "web:app", "--host", "0.0.0.0", "--port", "8001"]
 # CMD ["python", "main.py"]
-CMD ["python"]
+CMD ["./start.sh"]

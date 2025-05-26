@@ -1,1 +1,0 @@
-docker build -t we-mp-rss:latest .
