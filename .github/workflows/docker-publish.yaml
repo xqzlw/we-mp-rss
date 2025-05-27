@@ -7,7 +7,7 @@ on:
       - main
     paths:  # 仅在指定文件变化时触发（可选）
       - 'Dockerfile'
-      - 'Readme.md'
+      - 'ReadMe.md'
       - 'core/config.py'
 jobs:
   build-and-push:
