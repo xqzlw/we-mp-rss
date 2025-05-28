@@ -2,7 +2,7 @@
 
 # 设置路径变量
 DIST_DIR="dist"
-TARGET_DIR="../../static"
+TARGET_DIR="../static"
 
 # 执行构建
 npm run build
